@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LEIV — The Journey Starts Here</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Inter:wght@300;400;500&display=swap');
+  :root { --yellow:#F5D23D; --black:#0A0A0A; --dark:#111111; --cream:#F5F0E8; --gray:#888; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--black);color:white;font-family:'Inter',sans-serif;overflow-x:hidden;}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:24px 48px;}
+  .nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;letter-spacing:3px;color:var(--yellow);}
+  .nav-cta{background:var(--yellow);color:var(--black);border:none;padding:10px 24px;font-family:'Inter',sans-serif;font-weight:500;font-size:13px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:transform .2s;}
+  .nav-cta:hover{transform:translateY(-2px);}
+
+  /* HERO */
+  .hero{position:relative;height:100vh;overflow:hidden;display:flex;align-items:flex-end;padding-bottom:80px;}
+  .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;animation:slowZoom 20s ease-out forwards;}
+  @keyframes slowZoom{from{transform:scale(1.1);}to{transform:scale(1.0);}}
+  .hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.93) 0%,rgba(0,0,0,0.35) 55%,rgba(0,0,0,0.1) 100%);}
+  .hero-content{position:relative;z-index:2;padding:0 48px;max-width:1200px;}
+  .hero-tag{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--yellow);margin-bottom:20px;opacity:0;animation:fadeUp .8s .3s forwards;}
+  .hero-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(72px,10vw,140px);font-weight:900;line-height:.9;text-transform:uppercase;letter-spacing:-1px;opacity:0;animation:fadeUp .8s .5s forwards;}
+  .hero-title span{color:var(--yellow);}
+  .hero-sub{font-size:17px;font-weight:300;color:rgba(255,255,255,.7);max-width:480px;line-height:1.6;margin-top:24px;opacity:0;animation:fadeUp .8s .8s forwards;}
+  .hero-actions{margin-top:36px;display:flex;gap:16px;align-items:center;opacity:0;animation:fadeUp .8s 1s forwards;}
+  .btn-primary{background:var(--yellow);color:var(--black);border:none;padding:14px 32px;font-family:'Inter',sans-serif;font-weight:500;font-size:13px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:transform .2s;}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-secondary{background:transparent;color:white;border:1px solid rgba(255,255,255,.3);padding:14px 32px;font-family:'Inter',sans-serif;font-weight:400;font-size:13px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:border-color .2s,color .2s;}
+  .btn-secondary:hover{border-color:var(--yellow);color:var(--yellow);}
+  .scroll-hint{position:absolute;bottom:32px;right:48px;z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fadeIn 1s 1.5s forwards;}
+  .scroll-hint span{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);}
+  .scroll-line{width:1px;height:48px;background:rgba(255,255,255,.2);position:relative;overflow:hidden;}
+  .scroll-line::after{content:'';position:absolute;top:0;left:0;right:0;height:16px;background:var(--yellow);animation:scrollDrop 1.5s 1.5s infinite;}
+  @keyframes scrollDrop{0%{top:-16px;}100%{top:100%;}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+  /* STATS BAR */
+  .stats-bar{background:var(--yellow);padding:0 48px;display:flex;justify-content:space-around;align-items:stretch;}
+  .stat-item{padding:28px 20px;text-align:center;flex:1;border-right:1px solid rgba(0,0,0,.1);}
+  .stat-item:last-child{border-right:none;}
+  .stat-num{font-family:'Barlow Condensed',sans-serif;font-size:42px;font-weight:900;color:var(--black);line-height:1;}
+  .stat-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(0,0,0,.6);margin-top:4px;}
+
+  /* PROBLEM */
+  .problem{max-width:100%;padding:120px 48px;background:var(--dark);}
+  .problem-inner{max-width:1200px;margin:0 auto;}
+  .problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:60px;}
+  .problem-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(48px,5.5vw,82px);font-weight:900;text-transform:uppercase;line-height:.92;}
+  .problem-title em{color:var(--yellow);font-style:normal;}
+  .problem-lines{display:flex;flex-direction:column;}
+  .problem-line{display:flex;align-items:center;gap:20px;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.07);opacity:0;transform:translateX(-20px);transition:opacity .5s,transform .5s;}
+  .problem-line.visible{opacity:1;transform:translateX(0);}
+  .pl-num{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--yellow);letter-spacing:1px;min-width:28px;}
+  .pl-text{font-size:15px;color:rgba(255,255,255,.6);font-weight:300;}
+  .pl-hit{color:white;font-weight:500;}
+
+  /* PROBLEM IMAGE STRIP */
+  .problem-img-strip{width:100%;height:320px;position:relative;overflow:hidden;margin-top:0;}
+  .problem-img-strip img{width:100%;height:100%;object-fit:cover;object-position:center 30%;filter:grayscale(20%);}
+  .problem-img-strip-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,var(--dark) 0%,transparent 20%,transparent 80%,var(--dark) 100%);}
+  .strip-label{position:absolute;bottom:32px;left:48px;font-family:'Barlow Condensed',sans-serif;font-size:clamp(28px,3vw,42px);font-weight:900;text-transform:uppercase;color:white;letter-spacing:1px;}
+  .strip-label span{color:var(--yellow);}
+
+  /* SOLUTION SPLIT */
+  .solution-wrap{max-width:100%;padding:0;background:var(--black);overflow:hidden;}
+  .solution-split{display:grid;grid-template-columns:1fr 1fr;min-height:80vh;}
+  .sol-photo{position:relative;overflow:hidden;}
+  .sol-photo img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .6s;}
+  .sol-photo:hover img{transform:scale(1.03);}
+  .sol-photo-overlay{position:absolute;inset:0;background:linear-gradient(to right,transparent 60%,var(--black) 100%);}
+  .sol-content{padding:100px 64px;display:flex;flex-direction:column;justify-content:center;}
+  .sol-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(48px,5vw,78px);font-weight:900;text-transform:uppercase;line-height:.92;margin-bottom:32px;}
+  .sol-title span{color:var(--yellow);}
+  .sol-body{font-size:16px;font-weight:300;line-height:1.7;color:rgba(255,255,255,.65);max-width:420px;}
+  .sol-body strong{color:white;font-weight:500;}
+
+  /* CONNECT */
+  .connect{background:var(--cream);padding:120px 48px;max-width:100%;}
+  .connect-inner{max-width:1200px;margin:0 auto;}
+  .connect-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(52px,6vw,88px);font-weight:900;text-transform:uppercase;color:var(--black);line-height:.9;margin-bottom:64px;}
+  .connect-title span{color:var(--yellow);}
+  .connect-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;}
+  .connect-card{background:var(--black);padding:40px 32px;opacity:0;transform:translateY(40px);transition:opacity .5s,transform .5s;position:relative;overflow:hidden;}
+  .connect-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--yellow);transform:scaleX(0);transform-origin:left;transition:transform .4s;}
+  .connect-card:hover::before{transform:scaleX(1);}
+  .connect-card.visible{opacity:1;transform:translateY(0);}
+  .cc-num{font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;color:var(--yellow);margin-bottom:20px;}
+  .cc-title{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:700;text-transform:uppercase;color:white;margin-bottom:12px;}
+  .cc-body{font-size:13px;font-weight:300;line-height:1.6;color:rgba(255,255,255,.5);}
+
+  /* PHOTO ROW */
+  .photo-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4px;height:500px;overflow:hidden;}
+  .pr-img{overflow:hidden;position:relative;}
+  .pr-img img{width:100%;height:100%;object-fit:cover;transition:transform .7s;}
+  .pr-img:hover img{transform:scale(1.05);}
+
+  /* MARKET */
+  .market{max-width:100%;padding:120px 48px;background:var(--dark);}
+  .market-inner{max-width:1200px;margin:0 auto;}
+  .market-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;margin-top:60px;align-items:center;}
+  .market-numbers{display:flex;flex-direction:column;gap:32px;}
+  .mn-item{border-left:3px solid var(--yellow);padding-left:24px;}
+  .mn-size{font-family:'Barlow Condensed',sans-serif;font-size:52px;font-weight:900;color:white;line-height:1;}
+  .mn-label{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-top:4px;}
+  .mn-sub{font-size:14px;color:rgba(255,255,255,.5);margin-top:6px;font-weight:300;}
+  .market-big{font-family:'Barlow Condensed',sans-serif;font-size:clamp(42px,5vw,68px);font-weight:900;text-transform:uppercase;line-height:.95;margin-bottom:28px;}
+  .market-big span{color:var(--yellow);}
+  .market-body{font-size:15px;font-weight:300;line-height:1.7;color:rgba(255,255,255,.6);}
+
+  /* CTA */
+  .cta-section{background:var(--yellow);padding:100px 48px;text-align:center;max-width:100%;}
+  .cta-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(52px,7vw,100px);font-weight:900;text-transform:uppercase;color:var(--black);line-height:.9;margin-bottom:24px;}
+  .cta-sub{font-size:17px;color:rgba(0,0,0,.6);margin-bottom:40px;font-weight:300;}
+  .btn-dark{background:var(--black);color:white;border:none;padding:16px 40px;font-family:'Inter',sans-serif;font-weight:500;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:transform .2s;display:inline-block;}
+  .btn-dark:hover{transform:translateY(-3px);}
+
+  /* FOOTER */
+  footer{background:var(--black);padding:40px 48px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,.06);}
+  .footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:var(--yellow);letter-spacing:2px;}
+  .footer-copy{font-size:12px;color:var(--gray);}
+
+  .section-tag{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--yellow);margin-bottom:20px;}
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity .7s,transform .7s;}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">LEIV</div>
+  <button class="nav-cta">Get in touch</button>
+</nav>
+
+<!-- HERO — Barcelona street (img5) -->
+<div class="hero">
+  <img class="hero-img" src="images/friends-coffee.jpg" alt="Travel">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-tag">The journey starts here</div>
+    <h1 class="hero-title">Travel,<br><span>Reinvented.</span></h1>
+    <p class="hero-sub">Leiv is the intelligent platform connecting travelers, content creators, destinations, and commerce — in one seamless experience.</p>
+    <div class="hero-actions">
+      <button class="btn-primary">Get early access</button>
+      <button class="btn-secondary">Learn more</button>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-num" data-target="87" data-suffix="%">0%</div>
+    <div class="stat-label">inspired via social media</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" data-target="15" data-suffix="+">0+</div>
+    <div class="stat-label">apps per trip on average</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" data-target="97" data-suffix="%">0%</div>
+    <div class="stat-label">of travel apps deleted in a month</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">$3T</div>
+    <div class="stat-label">global travel market</div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<div class="problem">
+  <div class="problem-inner">
+    <div class="section-tag reveal">The problem</div>
+    <div class="problem-grid">
+      <div class="problem-title reveal">A <em>$3 trillion</em> industry running on broken infrastructure</div>
+      <div class="problem-lines">
+        <div class="problem-line"><span class="pl-num">01</span><span class="pl-text">Inspiration happens on <span class="pl-hit">TikTok and Instagram</span></span></div>
+        <div class="problem-line"><span class="pl-num">02</span><span class="pl-text">Planning moves to <span class="pl-hit">Google and blogs</span></span></div>
+        <div class="problem-line"><span class="pl-num">03</span><span class="pl-text">Booking lands on <span class="pl-hit">an OTA</span></span></div>
+        <div class="problem-line"><span class="pl-num">04</span><span class="pl-text">Payment goes through <span class="pl-hit">a bank</span></span></div>
+        <div class="problem-line"><span class="pl-num">05</span><span class="pl-text">The trip is managed across <span class="pl-hit">5–15 disconnected apps</span></span></div>
+        <div class="problem-line" style="border-bottom:none;padding-top:28px;">
+          <span class="pl-num" style="color:white">→</span>
+          <span class="pl-text" style="color:rgba(255,255,255,.85);font-size:16px;">The value chain is broken. No one has fixed it yet.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEM IMAGE STRIP — train station phones (img3) -->
+<div class="problem-img-strip">
+  <img src="images/girls-trainstation.jpg" alt="Travelers on phones">
+  <div class="problem-img-strip-overlay"></div>
+  <div class="strip-label">This is the reality.<br><span>We're changing it.</span></div>
+</div>
+
+<!-- SOLUTION SPLIT — friends group (img1) -->
+<div class="solution-wrap">
+  <div class="solution-split">
+    <div class="sol-photo">
+      <img src="images/couple-desert.jpg" alt="Travelers together">
+      <div class="sol-photo-overlay"></div>
+    </div>
+    <div class="sol-content">
+      <div class="section-tag reveal">The solution</div>
+      <h2 class="sol-title reveal">Leiv closes<br><span>the loop.</span></h2>
+      <p class="sol-body reveal">
+        At the core is a <strong>semantic AI layer</strong> that understands travel intent across text, images, and conversation — not just search queries.<br><br>
+        From the moment of inspiration to the moment of return, <strong>Leiv orchestrates the entire journey</strong> in a single intelligent system built for mobile-first generations.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- CONNECT CARDS -->
+<div class="connect">
+  <div class="connect-inner">
+    <div class="section-tag" style="color:rgba(0,0,0,.45);">Four players. One platform.</div>
+    <h2 class="connect-title reveal">The connected<br><span>journey.</span></h2>
+    <div class="connect-grid">
+      <div class="connect-card" style="transition-delay:0s">
+        <div class="cc-num">01 — TRAVELERS</div>
+        <div class="cc-title">Discover & Go</div>
+        <div class="cc-body">Plan, book, and experience without switching context. The entire journey in one place.</div>
+      </div>
+      <div class="connect-card" style="transition-delay:.1s">
+        <div class="cc-num">02 — CREATORS</div>
+        <div class="cc-title">Influence → Revenue</div>
+        <div class="cc-body">Turn content into measurable, transactional value. Inspiration becomes a commercial moment.</div>
+      </div>
+      <div class="connect-card" style="transition-delay:.2s">
+        <div class="cc-num">03 — DESTINATIONS</div>
+        <div class="cc-title">High-intent reach</div>
+        <div class="cc-body">Reach travelers at the exact moment of decision — with context, not just an ad.</div>
+      </div>
+      <div class="connect-card" style="transition-delay:.3s">
+        <div class="cc-num">04 — COMMERCE</div>
+        <div class="cc-title">Embedded & frictionless</div>
+        <div class="cc-body">Payments, bookings, and finance built directly into the journey. Not bolted on after.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHOTO ROW — desert (img4), camera (img2), couple luggage (img7) -->
+<div class="photo-row">
+  <div class="pr-img"><img src="images/couple-city.jpg" alt="Couple city"></div>
+  <div class="pr-img"><img src="images/couple-red.jpg" alt="Couple red"></div>
+  <div class="pr-img"><img src="images/man-camera.jpg" alt="Man camera"></div>
+  <div class="pr-img"><img src="images/girl-suitcase.jpg" alt="Girl suitcase"></div>
+</div>
+
+<!-- MARKET -->
+<div class="market">
+  <div class="market-inner">
+    <div class="section-tag reveal">The opportunity</div>
+    <div class="market-grid">
+      <div class="market-numbers">
+        <div class="mn-item reveal">
+          <div class="mn-size">$3T</div>
+          <div class="mn-label">Total Addressable Market</div>
+          <div class="mn-sub">Booking, travel finance, gear, and more</div>
+        </div>
+        <div class="mn-item reveal" style="transition-delay:.1s">
+          <div class="mn-size">$400B</div>
+          <div class="mn-label">Serviceable Available Market</div>
+          <div class="mn-sub">Mobile-first, digital-native travelers</div>
+        </div>
+        <div class="mn-item reveal" style="transition-delay:.2s">
+          <div class="mn-size">$4B</div>
+          <div class="mn-label">Serviceable Obtainable Market</div>
+          <div class="mn-sub">AI-driven travel orchestration segment</div>
+        </div>
+      </div>
+      <div>
+        <h2 class="market-big reveal">No one owns<br>the full<br><span>journey yet.</span></h2>
+        <p class="market-body reveal">
+          The OTA giants compete on price. Social platforms can't transact. No single player connects inspiration to payment to return.<br><br>
+          The category for intelligent, social, AI-driven travel orchestration is wide open.<br><br>
+          <strong style="color:white;">Leiv is first to market.</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <h2 class="cta-title">The journey<br>starts here.</h2>
+  <p class="cta-sub">We're looking for investors and partners ready to move early on a category-defining opportunity.</p>
+  <button class="btn-dark">Let's talk</button>
+</div>
+
+<footer>
+  <div class="footer-logo">LEIV</div>
+  <div class="footer-copy">© 2026 Leiv AS · Jessheim, Norway · www.leiv.travel</div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, {threshold:.15});
+  document.querySelectorAll('.reveal,.problem-line,.connect-card,.mn-item').forEach(el => obs.observe(el));
+
+  // Stagger problem lines
+  document.querySelectorAll('.problem-line').forEach((l,i) => l.style.transitionDelay = (i*.1)+'s');
+
+  // Counter animation
+  const cObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(!e.isIntersecting) return;
+      const el = e.target, target = +el.dataset.target, suffix = el.dataset.suffix||'';
+      let cur = 0, step = target/60;
+      const t = setInterval(() => {
+        cur += step;
+        if(cur >= target){ el.textContent = target+suffix; clearInterval(t); }
+        else el.textContent = Math.floor(cur)+suffix;
+      }, 16);
+      cObs.unobserve(el);
+    });
+  }, {threshold:.5});
+  document.querySelectorAll('[data-target]').forEach(el => cObs.observe(el));
+
+  // Parallax hero
+  window.addEventListener('scroll', () => {
+    const s = window.scrollY, img = document.querySelector('.hero-img');
+    if(img && s < window.innerHeight) img.style.transform = `scale(1.0) translateY(${s*.25}px)`;
+  });
+</script>
+</body>
+</html>
